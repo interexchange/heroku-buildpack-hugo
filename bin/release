@@ -1,18 +1,3 @@
 #!/bin/sh
 
-# Strong recommend you don't rely on this, and you use heroku-buildpack-static
-# instead. Info:
-#
-#    https://github.com/heroku/heroku-buildpack-static
-#
-# By running this AFTER adding the hugo buildpack, this `release` phase will be
-# overridden by the static buildpack:
-#
-#  $ heroku buildpacks:add https://github.com/heroku/heroku-buildpack-static.git
-#
-
-cat << EOF
----
-default_process_types:
-  web: "cd public && python -m SimpleHTTPServer \$PORT"
-EOF
+echo "--- {}"
