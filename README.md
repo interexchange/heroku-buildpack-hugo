@@ -40,13 +40,13 @@ Usage
 Create a Heroku application using this buildpack:
 
 ```bash
-$ heroku create --buildpack https://github.com/roperzh/heroku-buildpack-hugo.git
+$ heroku create --buildpack https://github.com/interexchange/heroku-buildpack-hugo.git
 ```
 
 or configure your existent application:
 
 ```bash
-$ heroku buildpacks:set BUILDPACK_URL="https://github.com/roperzh/heroku-buildpack-hugo.git"
+$ heroku buildpacks:set BUILDPACK_URL="https://github.com/interexchange/heroku-buildpack-hugo.git"
 ```
 
 Optionally, define a `HUGO_VERSION` Config Var to specify the Hugo version you wish to use:
