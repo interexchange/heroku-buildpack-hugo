@@ -32,8 +32,10 @@ fi
 # Extract the binary in the working directory
 echo "\n-----> Extracting Hugo ${HUGO_VERSION} binaries to ${BUILD_DIR}"
 mkdir -p $CACHE_DIR/$RELEASE_NAME
-mkdir -p $BUILD_DIR/bin/
+mkdir -p $BUILD_DIR/.heroku/hugo/bin/
 tar -zxvf $CACHE_DIR/$FILE_NAME -C $CACHE_DIR
-mv $CACHE_DIR/hugo $BUILD_DIR/bin/hugo
+mv $CACHE_DIR/hugo $BUILD_DIR/.heroku/hugo/bin/hugo
+
+export PATH=$PATH:$BUILD_DIR/.heroku/hugo/bin/
 
 hugo version
