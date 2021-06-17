@@ -53,33 +53,37 @@ export_env_dir() {
     done
   fi
 }
-export_env_dir $ENV_DIR
+export_env_dir $env_dir
 
-# if the user has a script/pre-hugo-build script, run that
-PRE_BUILD_SCRIPT="$BUILD_DIR/script/pre-hugo-build"
-if [ -x "$PRE_BUILD_SCRIPT" ]; then
-  echo "\n-----> Running pre-build script: $PRE_BUILD_SCRIPT"
-  $PRE_BUILD_SCRIPT "$BUILD_DIR" "$CACHE_DIR" "$ENV_DIR"
-fi
+if [ -d "$BUILD_DIR/config" ]; then
+  # if the user has a script/pre-hugo-build script, run that
+  PRE_BUILD_SCRIPT="$BUILD_DIR/script/pre-hugo-build"
+  if [ -x "$PRE_BUILD_SCRIPT" ]; then
+    echo "\n-----> Running pre-build script: $PRE_BUILD_SCRIPT"
+    $PRE_BUILD_SCRIPT "$BUILD_DIR" "$CACHE_DIR" "$ENV_DIR"
+  fi
 
-# Fetch a theme specified in the .hugotheme file
-if [ -e $BUILD_DIR/.hugotheme ]; then
-  echo "\n-----> Getting the theme"
-  THEME_URL="`cat $BUILD_DIR/.hugotheme`"
-  rm -rf $BUILD_DIR/themes && mkdir $BUILD_DIR/themes && cd $BUILD_DIR/themes
-  git clone $THEME_URL
-fi
+  # Fetch a theme specified in the .hugotheme file
+  if [ -e $BUILD_DIR/.hugotheme ]; then
+    echo "\n-----> Getting the theme"
+    THEME_URL="`cat $BUILD_DIR/.hugotheme`"
+    rm -rf $BUILD_DIR/themes && mkdir $BUILD_DIR/themes && cd $BUILD_DIR/themes
+    git clone $THEME_URL
+  fi
 
-# Build the site
-echo "\n-----> Building the site"
-cd $BUILD_DIR
-mkdir -p static
-./hugo --cleanDestinationDir --ignoreCache
+  # Build the site
+  echo "\n-----> Building the site"
+  cd $BUILD_DIR
+  mkdir -p static
+  ./hugo --cleanDestinationDir --ignoreCache
 
-# if the user has a script/post-hugo-build script, run that
-POST_BUILD_SCRIPT="$BUILD_DIR/script/post-hugo-build"
-if [ -x "$POST_BUILD_SCRIPT" ]; then
-  echo "\n-----> Running post-build script: $POST_BUILD_SCRIPT"
-  $POST_BUILD_SCRIPT "$BUILD_DIR" "$CACHE_DIR" "$ENV_DIR"
+  # if the user has a script/post-hugo-build script, run that
+  POST_BUILD_SCRIPT="$BUILD_DIR/script/post-hugo-build"
+  if [ -x "$POST_BUILD_SCRIPT" ]; then
+    echo "\n-----> Running post-build script: $POST_BUILD_SCRIPT"
+    $POST_BUILD_SCRIPT "$BUILD_DIR" "$CACHE_DIR" "$ENV_DIR"
+  fi
+else
+  echo "\n-----> Missing $BUILD_DIR, skipping build process"
 fi
 
